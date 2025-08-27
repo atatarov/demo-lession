@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+
+import { LessonStep1 } from "./ui/LessionSteps/LessonStep1/LessonStep1";
+import { LessonStep2 } from "./ui/LessionSteps/LessonStep2/LessonStep2";
+import { LessonStep3 } from "./ui/LessionSteps/LessonStep3/LessonStep3";
+import { LessonStep4 } from "./ui/LessionSteps/LessonStep4/LessonStep4";
+import { LessonStep5 } from "./ui/LessionSteps/LessonStep5/LessonStep5";
+import { LessonPagination } from "./ui/LessionPagination/LessionPagination";
+
+const steps = [
+  {
+    id: 1,
+    title: "Как устроен процесс рендеринга в React",
+    component: <LessonStep1 />,
+  },
+  { id: 2, title: "Интерактив: рендеринг", component: <LessonStep2 /> },
+  { id: 3, title: "Concurrent Rendering", component: <LessonStep3 /> },
+  { id: 4, title: "Пример использования", component: <LessonStep4 /> },
+  { id: 5, title: "Пример использования", component: <LessonStep5 /> },
+];
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const nextStep = () =>
+    setCurrentStep((s) => (s < steps.length - 1 ? s + 1 : s));
+  const prevStep = () => setCurrentStep((s) => (s > 0 ? s - 1 : s));
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      <LessonPagination
+        steps={steps}
+        currentStep={currentStep}
+        onNext={nextStep}
+        onPrev={prevStep}
+      />
+      <div className="lesson-step">{steps[currentStep].component}</div>
+    </div>
+  );
 }
 
-export default App
+export default App;
